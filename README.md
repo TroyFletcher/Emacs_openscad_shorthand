@@ -43,9 +43,9 @@ _Do not process as escad shorthand_
 
 **EX:** ```@ overall_height = 36;```
 
-Trailing space not necessary, but recommended for clarity
-variables, once defined, may be used in place of numerical values
-or evaluations without spaces EX: c 1 overall_height+10 2
+Trailing space not necessary, but recommended for clarity. Variables, once defined, may be used in place of numerical values or evaluations **without** spaces.
+
+**EX:** ```c 1 overall_height+10 2```
 
 ## \#
 _highlight element_
