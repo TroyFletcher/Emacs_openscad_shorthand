@@ -30,6 +30,8 @@ rotate([90,0,0]){
 };
 ```
 
+### NOTE: Whitespace in source buffer is ignored, but recommended
+
 # SHORTHAND SYNTAX
 
 ## @
