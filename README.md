@@ -14,7 +14,7 @@ This function will write complete openscad syntax to ~/test.scad.
 y 4 2
 t 2 4 0
  r 90 0 0
-  #c 2 2 2
+  #u 2 2 2
  x
 x
 
@@ -52,16 +52,28 @@ _highlight element_
 
 _prepend element with # for highlighting in openscad_
 
-**EX:** #c 1 2 3 = ```#cube([1,2,3]);```
+**EX:** #u 1 2 3 = ```#cube([1,2,3]);```
 
 Leading whitespace is not a problem, but there should not be a space
 between the hash and the next character
 
 ## c
 
-_cube width depth height_
+_circle Radius/Diameter value_
 
-**EX:** c 1 2 3 = ```cube([1,2,3]);```
+**EX:** c r 5 = ```circle(r=5);```
+
+## s
+
+_square X Y (optional) center_
+
+**EX:** s 5 5 t= ```square([5,5], center=true);```
+
+## u
+
+_cUbe width depth height_
+
+**EX:** u 1 2 3 = ```cube([1,2,3]);```
 
 ## y
 _cylinder diameter height_
@@ -82,12 +94,12 @@ NOTE: Opens braces, must be closed with x
 
 **EX:** r 90 180 0 = ```rotate([90,180,0]){```
 
-## u
-_insert union element_
+## n
+_insert uNion element_
 
 **NOTE:** Opens braces, must be closed with x
 
-**EX**: u = ```union() {```
+**EX**: n = ```union() {```
 
 ## d
 _insert difference element_
@@ -95,6 +107,39 @@ _insert difference element_
 **NOTE:** Opens braces, must be closed with x
 
 **EX:** d = ```difference() {```
+
+## h
+_insert hull element_
+
+**NOTE:** Opens braces, must be closed with x
+
+**EX:** m = ```hull() {```
+
+## m
+_insert minkowski element_
+
+**NOTE:** Opens braces, must be closed with x
+
+**EX:** m = ```minkowski() {```
+
+## re
+
+_rotate angle convexivity_
+
+_insert rotate_extrude element_
+
+**NOTE:** Opens braces, must be closed with x
+
+**EX:** re 360 2  = ```rotate_extrude([360,2]){```
+
+## p
+
+_rotate (points) (paths)_
+
+_insert polygon element_
+
+**EX:** p (0 0  40 10  50 30  30 50 ) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],]);```
+**EX:** p (0 0  40 10  50 30   30 50 ) (0 1 2 3) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],],paths=[[0, 1, 2, 3]]);```
 
 ## x
 _Close braces_

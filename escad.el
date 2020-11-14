@@ -102,16 +102,29 @@
     ))
 
 ;; Approved commands (letters) to process
-(setq allowed-commands '(u t r n d x y p m h))
+(setq allowed-commands '(s c u t r n d x y p m h))
 
 (defun escad-eval (sexp)
   "Evaluage escad language. Check flet for syntax"
   ;; technically flet is not ideal for this, but lambda-ing this balks at the rede
   ;; finition of t so whatever. Maybe I'll adapt it to cl-flet
   (flet (
-	 ;; square(size = [x, y], center = true/false);
-	 ;; square(size =  x    , center = true/false);
-	 ;; circle(r=radius | d=diameter);
+	 (s (x y &optional center)
+	    (concat
+	     "square(["
+	     (number-to-string x) ","
+	     (number-to-string y) "]"
+	     (if center
+		 ", center=true")
+	     ");"))
+	 (c (rd x)
+	    (concat
+	     "circle("
+	     (if (eq 'r rd)
+		 (concat "r=" (number-to-string x))
+	       (concat "d=" (number-to-string x))
+	       )
+	     ");"))
 	 (u (w d h)
 	    (concat
 	     "cube(["
