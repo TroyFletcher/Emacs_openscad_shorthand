@@ -1,5 +1,6 @@
 ;; Open an empty buffer, type openscad shorthand, and call (escad-current-buffer)
 ;; to write complete openscad syntax to ~/test.scad.
+;; REQUIRES PACKAGE cl-lib !
 
 ;; Example:
 
@@ -101,14 +102,17 @@
     ))
 
 ;; Approved commands (letters) to process
-(setq allowed-commands '(c t r u d x y))
+(setq allowed-commands '(u t r n d x y p m h))
 
 (defun escad-eval (sexp)
   "Evaluage escad language. Check flet for syntax"
   ;; technically flet is not ideal for this, but lambda-ing this balks at the rede
   ;; finition of t so whatever. Maybe I'll adapt it to cl-flet
   (flet (
-	 (c (w d h)
+	 ;; square(size = [x, y], center = true/false);
+	 ;; square(size =  x    , center = true/false);
+	 ;; circle(r=radius | d=diameter);
+	 (u (w d h)
 	    (concat
 	     "cube(["
 	     (number-to-string w) ","
@@ -131,15 +135,41 @@
 	     "cylinder("
 	     "d=" (number-to-string d) ", "
 	     "h=" (number-to-string h) ");"))
-	 (u () "union() {")
+	 (n () "union() {")
 	 (d () "difference() {")
+	 (i () "intersection() {")
+	 (m () "minkowski() {")
+	 (h () "hull() {")
+	 (re (a c)
+	    (concat
+	     "rotate_extrude(["
+	     (number-to-string a) ","
+	     (number-to-string c) "]){"))
 	 (x () "};")
-	  )
+	 (p (points &optional paths)
+	    (concat
+	     "polygon(points=["
+	     (enclose_points points)
+	     (if paths
+		 (concat
+		  "],paths=[["
+		  (mapconcat 'identity (mapcar 'number-to-string paths) ", ")
+		  "]"))
+	     "]);"))
+	 (enclose_points(points)
+			(if points
+			    (concat
+			     "[" (number-to-string (car points)) ","
+			     (number-to-string (cadr points)) "],"
+			     (enclose_points(cddr points)))))
+	 )
   (if (member (car sexp) allowed-commands)
       (eval sexp)
     "I do not know that command.\n")))
 
 (defun escad-print (string newline)
+  "where to send the output"
+  ;; presently outputting to temprory buffer defined in (escad-current-buffer)
   (insert (concat string))
   (if newline
       (insert "\n")
@@ -180,6 +210,4 @@
 
 ;; (setq lines (read-lines-from-file "~/tmp"))
 ;; (setq line (car lines))
-
-
 
