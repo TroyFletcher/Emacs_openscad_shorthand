@@ -172,9 +172,9 @@ _rotate (points) (paths)_
 
 _insert polygon element_
 
-**EX:** p (0 0  40 10  50 30  30 50 ) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],]);```
+**EX:** p (0 0 &nbsp; 40 10 &nbsp; 50 30 &nbsp; 30 50 ) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],]);```
 
-**EX:** p (0 0  40 10  50 30   30 50 ) (0 1 2 3) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],],paths=[[0, 1, 2, 3]]);```
+**EX:** p (0 0 &nbsp; 40 10 &nbsp; 50 30 &nbsp; 30 50 ) (0 1 2 3) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],],paths=[[0, 1, 2, 3]]);```
 
 **NOTE:** paths currently accepts numbers only! See commit ```2b1c762``` for why and how to change it
 
