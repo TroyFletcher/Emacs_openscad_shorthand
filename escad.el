@@ -92,9 +92,26 @@
 
 (defun line-read (line)
   "reads string as elisp code. yay homoiconicity!
-   1st arg is the function, and the rest are quoted"
+   1st arg is the function, and the rest are quoted
+   with lisp-specific symbols auto escaped"
   (let ((cmd
-	 (car (read-from-string (concat "(" (mapconcat 'identity (split-string line "\\.") "\\\.") ")")))))
+	 (car (read-from-string
+	       (concat
+		"("
+		(mapconcat
+		 'identity
+		 (split-string
+		  (mapconcat
+		   'identity
+		   (split-string
+		    (mapconcat
+		     'identity
+		     (split-string
+		      line ;; for line
+		      "\\.") "\\\.") ;; swap . with \.
+		    "\(") "\\\(") ;; swap ( with \(
+		  "\)") "\\\)") ;; swap ) with \)
+		")")))))
     (cons
      (car cmd)
      (mapcar (lambda (x) (list 'quote x))
