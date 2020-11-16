@@ -31,6 +31,7 @@ rotate([90,0,0]){
 ```
 
 ### NOTE: Whitespace in source buffer is ignored, but recommended
+### NOTE: Flet on some versions will throw a warning to use cl-flet, but cl-flet rejects reassignment of t, so ignore it. Reducing syntax and improving feedback is what is important, not adhering to standards. t should be translate!
 
 # SHORTHAND SYNTAX
 
@@ -151,6 +152,7 @@ Used to close braces previously opened by t, r, u, d
 
 **EX:** x = ```};```
 
+**NOTE:** x calls may be stacked up to 3 per line! If you have any idea why flet stops recursively calling the function past 3 nestings, let me know!
 
 # This is alpha code!
 I am aware this is not the right format for an emacs library, if you want to correct the syntax, please feel free. This is Alpha, and I put it together in a few hours in the middle of the night while tending sick kids. There are probably mistakes!
