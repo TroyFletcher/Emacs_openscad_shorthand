@@ -45,7 +45,7 @@ _Do not process as escad shorthand_
 
 Trailing space not necessary, but recommended for clarity. Variables, once defined, may be used in place of numerical values or evaluations **without** spaces.
 
-**EX:** ```c 1 overall_height+10 2```
+**EX:** ```c 1 (overall_height+10)/5 2```
 
 ## \#
 _highlight element_
