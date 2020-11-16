@@ -152,7 +152,12 @@ Used to close braces previously opened by t, r, u, d
 
 **EX:** x = ```};```
 
-**NOTE:** x calls may be stacked up to 3 per line! If you have any idea why flet stops recursively calling the function past 3 nestings, let me know!
+
+**EX:** x = ```};```
+
+**EX:** x x x = ```};};};```
+
+**NOTE:** x calls may be stacked up to 3 per line MAX! If you have any idea why flet stops recursively calling the function past 3 nestings, let me know!
 
 # This is alpha code!
 I am aware this is not the right format for an emacs library, if you want to correct the syntax, please feel free. This is Alpha, and I put it together in a few hours in the middle of the night while tending sick kids. There are probably mistakes!
