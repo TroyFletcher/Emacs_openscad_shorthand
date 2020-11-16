@@ -94,7 +94,7 @@
   "reads string as elisp code. yay homoiconicity!
    1st arg is the function, and the rest are quoted"
   (let ((cmd
-	 (car (read-from-string (concat "(" line ")")))))
+	 (car (read-from-string (concat "(" (mapconcat 'identity (split-string line "\\.") "\\\.") ")")))))
     (cons
      (car cmd)
      (mapcar (lambda (x) (list 'quote x))
