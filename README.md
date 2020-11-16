@@ -142,6 +142,8 @@ _insert polygon element_
 
 **EX:** p (0 0  40 10  50 30   30 50 ) (0 1 2 3) = ```polygon(points=[[0,0],[40,10],[50,30],[30,50],],paths=[[0, 1, 2, 3]]);```
 
+**NOTE:** paths currently accepts numbers only! See commit ```2b1c762``` for why and how to change it
+
 ## x
 _Close braces_
 
