@@ -10,24 +10,57 @@ This function will write complete openscad syntax to ~/test.scad.
 
 ### Example:
 ```
-@ $fn=20;
-y 4 2
-t 2 4 0
- r 90 0 0
-  #u 2 2 2
- x
+@ unit = 19.05;
+@ u = unit;
+
+@ module base() {
+ d
+  n
+   u u u sbh
+   @ stand();
+   n 
+    t 0 u-pd 0
+     @ stand();
+    x x x
+  t (u-sbd)/2 (u-sbd)/2 -1
+   u sbd sbd sbh+10
+   t -1 -1 6
+    u sbd+2 sbd+2 sbh+4
+   x
+  x
+  t pw/2 -1 (axel_diameter/2)+15
+   r -90 0 0
+    y axel_diameter u+2
+   x x x
 x
 
 ```
 ### Generates:
 ```
-$fn=20;
-cylinder(d=4, h=2);
-translate([2,4,0]){
-rotate([90,0,0]){
-#cube([2,2,2]);
+unit = 19.05;
+u = unit;
+
+module base() {
+difference() {
+union() {
+cube([u,u,sbh]);
+stand();
+union() {
+translate([0,u-pd,0]){
+stand();
+};};};
+translate([(u-sbd)/2,(u-sbd)/2,-1]){
+cube([sbd,sbd,sbh+10]);
+translate([-1,-1,6]){
+cube([sbd+2,sbd+2,sbh+4]);
 };
 };
+translate([pw/2,-1,(axel_diameter/2)+15]){
+rotate([-90,0,0]){
+cylinder(d=axel_diameter, h=u+2);
+};};};
+};
+
 ```
 
 ### NOTE: Whitespace in source buffer is ignored, but recommended
