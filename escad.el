@@ -101,6 +101,16 @@
 	     (cdr cmd)))
     ))
 
+(defun stringer (value)
+  "return the appropraite stringifying function for the value"
+  (if (typep value 'symbol)
+      'symbol-name
+    (if (typep value 'integer)
+	'number-to-string
+      )
+    )
+  )
+
 ;; Approved commands (letters) to process
 (setq allowed-commands '(s c u t r n d x y p m h))
 
@@ -112,8 +122,8 @@
 	 (s (x y &optional center)
 	    (concat
 	     "square(["
-	     (number-to-string x) ","
-	     (number-to-string y) "]"
+	     (funcall (stringer x) x) ","
+	     (funcall (stringer y) y) "]"
 	     (if center
 		 ", center=true")
 	     ");"))
@@ -121,33 +131,36 @@
 	    (concat
 	     "circle("
 	     (if (eq 'r rd)
-		 (concat "r=" (number-to-string x))
-	       (concat "d=" (number-to-string x))
+		 (concat "r=" (funcall (stringer x) x))
+	       (concat "d=" (funcall (stringer x) x))
 	       )
 	     ");"))
-	 (u (w d h)
+	 (u (w d h &optional center)
 	    (concat
 	     "cube(["
-	     (number-to-string w) ","
-	     (number-to-string d) ","
-	     (number-to-string h) "]);"))
+	     (funcall (stringer w) w) ","
+	     (funcall (stringer d) d) ","
+	     (funcall (stringer h) h) "]"
+	     (if center
+		 ", center=true")
+	     ");"))
 	 (t (x y z)
 	    (concat
 	     "translate(["
-	     (number-to-string x) ","
-	     (number-to-string y) ","
-	     (number-to-string z) "]){"))
+	     (funcall (stringer x) x) ","
+	     (funcall (stringer y) y) ","
+	     (funcall (stringer z) z) "]){"))
 	 (r (x y z)
 	    (concat
 	     "rotate(["
-	     (number-to-string x) ","
-	     (number-to-string y) ","
-	     (number-to-string z) "]){"))
+	     (funcall (stringer x) x) ","
+	     (funcall (stringer y) y) ","
+	     (funcall (stringer z) z) "]){"))
 	 (y (d h)
 	    (concat
 	     "cylinder("
-	     "d=" (number-to-string d) ", "
-	     "h=" (number-to-string h) ");"))
+	     "d=" (funcall (stringer d) d) ", "
+	     "h=" (funcall (stringer h) h) ");"))
 	 (n () "union() {")
 	 (d () "difference() {")
 	 (i () "intersection() {")
@@ -156,8 +169,8 @@
 	 (re (a c)
 	    (concat
 	     "rotate_extrude(["
-	     (number-to-string a) ","
-	     (number-to-string c) "]){"))
+	     (funcall (stringer a) a) ","
+	     (funcall (stringer c) c) "]){"))
 	 (x () "};")
 	 (p (points &optional paths)
 	    (concat
@@ -166,14 +179,14 @@
 	     (if paths
 		 (concat
 		  "],paths=[["
-		  (mapconcat 'identity (mapcar 'number-to-string paths) ", ")
+		  (mapconcat 'identity (mapcar (funcall 'stringer pa p)ths) ", ")
 		  "]"))
 	     "]);"))
 	 (enclose_points(points)
 			(if points
 			    (concat
-			     "[" (number-to-string (car points)) ","
-			     (number-to-string (cadr points)) "],"
+			     "[" (funcall (stringer (car points))(car points)) ","
+			     (funcall (stringer (cadr points))(cadr points)) "],"
 			     (enclose_points(cddr points)))))
 	 )
   (if (member (car sexp) allowed-commands)
@@ -224,3 +237,6 @@
 ;; (setq lines (read-lines-from-file "~/tmp"))
 ;; (setq line (car lines))
 
+;; (concat (apply number-to-string 9) "!")
+;; (stringer 9)
+;; (concat (funcall (stringer 'aa) 'aaa) "!")
