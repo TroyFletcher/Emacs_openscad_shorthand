@@ -171,7 +171,12 @@
 	     "rotate_extrude(["
 	     (funcall (stringer a) a) ","
 	     (funcall (stringer c) c) "]){"))
-	 (x () "};")
+	 (x  (&rest xs)
+	     (if (car xs )
+		 (concat "};" (x (cdr xs)))
+	       "};" 
+	       )
+	     )
 	 (p (points &optional paths)
 	    (concat
 	     "polygon(points=["
@@ -206,7 +211,7 @@
   (if lines
       (progn 
 	(if (string= "@" (first-char (car lines)))
-	    (escad-print (eval (cons 'concat (cddr (split-string (car lines) "" t)))) t)
+	    (escad-print (eval (cons 'concat (cddr (split-string (trim-string (car lines)) "" t)))) t)
 	  (if (string= "#" (first-char (car lines)))
 	      (progn
 		(escad-print "#" nil)
@@ -231,12 +236,3 @@
     (escad-process-file current-buffer-lines)
     (write-file "~/test.scad")
     )))
-
-;; (escad-process-file (read-lines-from-file "~/tmp"))
-
-;; (setq lines (read-lines-from-file "~/tmp"))
-;; (setq line (car lines))
-
-;; (concat (apply number-to-string 9) "!")
-;; (stringer 9)
-;; (concat (funcall (stringer 'aa) 'aaa) "!")
