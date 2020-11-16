@@ -184,7 +184,7 @@
 	     (if paths
 		 (concat
 		  "],paths=[["
-		  (mapconcat 'identity (mapcar (funcall 'stringer pa p)ths) ", ")
+		  (mapconcat 'identity (mapcar 'number-to-string paths) ", ")
 		  "]"))
 	     "]);"))
 	 (enclose_points(points)
