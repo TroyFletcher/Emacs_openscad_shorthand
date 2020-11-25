@@ -1,5 +1,6 @@
 # Emacs_openscad_shorthand
 ![alt text](https://github.com/TroyFletcher/Emacs_openscad_shorthand/raw/main/emacs_scad.png "shorthand example")
+![alt text](https://github.com/TroyFletcher/Emacs_openscad_shorthand/raw/main/escad_compare.png "shorthand comparison")
 ***
 Emacs integration of an OpenSCAD shorthand to reduce openscad syntax
 
