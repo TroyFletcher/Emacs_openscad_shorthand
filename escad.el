@@ -132,27 +132,28 @@
 (setq allowed-commands '(s c u t r n d x y p m h))
 
 (defun escad-eval (sexp)
-  "Evaluage escad language. Check flet for syntax"
+  "Evaluate escad language. Check flet for syntax"
   ;; technically flet is not ideal for this, but lambda-ing this balks at the rede
   ;; finition of t so whatever. Maybe I'll adapt it to cl-flet
-  (flet (
-	 (s (x y &optional center)
+  ;; nevermind, cl-letf allows the dynamic scoping required 
+  (cl-letf (
+	 ((symbol-function 's)(lambda (x y &optional center)
 	    (concat
 	     "square(["
 	     (funcall (stringer x) x) ","
 	     (funcall (stringer y) y) "]"
 	     (if center
 		 ", center=true")
-	     ");"))
-	 (c (rd x)
+	     ");")))
+	 ((symbol-function 'c)(lambda (rd x)
 	    (concat
 	     "circle("
 	     (if (eq 'r rd)
 		 (concat "r=" (funcall (stringer x) x))
 	       (concat "d=" (funcall (stringer x) x))
 	       )
-	     ");"))
-	 (u (w d h &optional center)
+	     ");")))
+	 ((symbol-function 'u)(lambda (w d h &optional center)
 	    (concat
 	     "cube(["
 	     (funcall (stringer w) w) ","
@@ -160,41 +161,41 @@
 	     (funcall (stringer h) h) "]"
 	     (if center
 		 ", center=true")
-	     ");"))
-	 (t (x y z)
+	     ");")))
+	 ((symbol-function 't)(lambda (x y z)
 	    (concat
 	     "translate(["
 	     (funcall (stringer x) x) ","
 	     (funcall (stringer y) y) ","
-	     (funcall (stringer z) z) "]){"))
-	 (r (x y z)
+	     (funcall (stringer z) z) "]){")))
+	 ((symbol-function 'r)(lambda (x y z)
 	    (concat
 	     "rotate(["
 	     (funcall (stringer x) x) ","
 	     (funcall (stringer y) y) ","
-	     (funcall (stringer z) z) "]){"))
-	 (y (d h)
+	     (funcall (stringer z) z) "]){")))
+	 ((symbol-function 'y)(lambda (d h)
 	    (concat
 	     "cylinder("
 	     "d=" (funcall (stringer d) d) ", "
-	     "h=" (funcall (stringer h) h) ");"))
-	 (n () "union() {")
-	 (d () "difference() {")
-	 (i () "intersection() {")
-	 (m () "minkowski() {")
-	 (h () "hull() {")
-	 (re (a c)
+	     "h=" (funcall (stringer h) h) ");")))
+	 ((symbol-function 'n)(lambda () "union() {"))
+	 ((symbol-function 'd)(lambda () "difference() {"))
+	 ((symbol-function 'i)(lambda () "intersection() {"))
+	 ((symbol-function 'm)(lambda () "minkowski() {"))
+	 ((symbol-function 'h)(lambda () "hull() {"))
+	 ((symbol-function 're)(lambda (a c)
 	    (concat
 	     "rotate_extrude(["
 	     (funcall (stringer a) a) ","
-	     (funcall (stringer c) c) "]){"))
-	 (x  (&rest xs)
+	     (funcall (stringer c) c) "]){")))
+	 ((symbol-function 'x)(lambda  (&rest xs)
 	     (if (car xs )
-		 (concat "};" (x (cdr xs)))
+	         (mapconcat 'identity (cons "};" (mapcar '(lambda (a) "};") xs)) "")
 	       "};" 
 	       )
-	     )
-	 (p (points &optional paths)
+	     ))
+	 ((symbol-function 'p)(lambda (points &optional paths)
 	    (concat
 	     "polygon(points=["
 	     (enclose_points points)
@@ -203,13 +204,13 @@
 		  "],paths=[["
 		  (mapconcat 'identity (mapcar 'number-to-string paths) ", ")
 		  "]"))
-	     "]);"))
-	 (enclose_points(points)
+	     "]);")))
+	 ((symbol-function 'enclose_points)(lambda (points)
 			(if points
 			    (concat
 			     "[" (funcall (stringer (car points))(car points)) ","
 			     (funcall (stringer (cadr points))(cadr points)) "],"
-			     (enclose_points(cddr points)))))
+			     (enclose_points(cddr points))))))
 	 )
   (if (member (car sexp) allowed-commands)
       (eval sexp)
