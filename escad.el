@@ -129,7 +129,7 @@
   )
 
 ;; Approved commands (letters) to process
-(setq allowed-commands '(s c u t r n d x y p m h))
+(setq allowed-commands '(s c u t r y n d i m h re x p))
 
 (defun escad-eval (sexp)
   "Evaluate escad language. Check flet for syntax"
@@ -184,11 +184,16 @@
 	 ((symbol-function 'i)(lambda () "intersection() {"))
 	 ((symbol-function 'm)(lambda () "minkowski() {"))
 	 ((symbol-function 'h)(lambda () "hull() {"))
-	 ((symbol-function 're)(lambda (a c)
+	 ((symbol-function 're)(lambda (a c x y z)
 	    (concat
-	     "rotate_extrude(["
-	     (funcall (stringer a) a) ","
-	     (funcall (stringer c) c) "]){")))
+	     "rotate_extrude("
+	     "angle=" (funcall (stringer a) a) ","
+	     "convexity=" (funcall (stringer c) c) ")"
+	     "translate(["
+	     (funcall (stringer x) x) ","
+	     (funcall (stringer y) y) ","
+	     (funcall (stringer z) z) "])"
+	     )))
 	 ((symbol-function 'x)(lambda  (&rest xs)
 	     (if (car xs )
 	         (mapconcat 'identity (cons "};" (mapcar '(lambda (a) "};") xs)) "")
