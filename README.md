@@ -65,7 +65,7 @@ cylinder(d=axel_diameter, h=u+2);
 ```
 
 ### NOTE: Whitespace in source buffer is ignored, but recommended
-### NOTE: Flet on some versions will throw a warning to use cl-flet, but cl-flet rejects reassignment of t, so ignore it. Reducing syntax and improving feedback is what is important, not adhering to standards. t should be translate!
+~~### NOTE: Flet on some versions will throw a warning to use cl-flet, but cl-flet rejects reassignment of t, so ignore it. Reducing syntax and improving feedback is what is important, not adhering to standards. t should be translate!~~ Fixed this by switching to cl-letf, which requires package cl-lib!
 
 # SHORTHAND SYNTAX
 
@@ -159,13 +159,19 @@ _insert minkowski element_
 
 ## re
 
-_rotate angle convexivity_
+_rotate-angle convexity translation-x translation-y translation-z_
 
-_insert rotate_extrude element_
+_insert rotate_extrude element with translation_
 
-**NOTE:** Opens braces, must be closed with x
+**NOTE:** Open function call, must be closed with semicolon on a 2d primitive on next line
 
-**EX:** re 360 2  = ```rotate_extrude([360,2]){```
+**EX:** re 360 20 &nbsp; 20 0 0
+
+**EX (cont):** c 5 5
+
+output: ```rotate_extrude(angle=360,convexity=20)translate([20,0,0])```
+
+output (cont): ```circle(d=5);```
 
 ## p
 
@@ -191,7 +197,7 @@ Used to close braces previously opened by t, r, u, d
 
 **EX:** x x x = ```};};};```
 
-**NOTE:** x calls may be stacked up to 3 per line MAX! If you have any idea why flet stops recursively calling the function past 3 nestings, let me know!
+~~**NOTE:** x calls may be stacked up to 3 per line MAX! If you have any idea why flet stops recursively calling the function past 3 nestings, let me know!~~ This was due to this kind of dynamic recursion being "frowned upon" within emacs, which feels wrong to me, but whatever. There's a silly mapcar/lambda alternative in its place that works well.
 
 # This is alpha code!
 I am aware this is not the right format for an emacs library, if you want to correct the syntax, please feel free. This is Alpha, and I put it together in a few hours in the middle of the night while tending sick kids. There are probably mistakes!
