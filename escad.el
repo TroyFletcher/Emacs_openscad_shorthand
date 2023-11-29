@@ -173,7 +173,7 @@
 	     (funcall (stringer x) x) ","
 	     (funcall (stringer y) y) ","
 	     (funcall (stringer z) z) "]){")))
-	 ((symbol-function 'y)(lambda (d h)
+	 ((symbol-function 'y)(lambda (d h &optional center)
 	    (concat
 	     "cylinder("
 	     "d=" (funcall (stringer d) d) ", "
