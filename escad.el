@@ -68,6 +68,9 @@
 ;; EX: x = };
 ;; 
 
+;; BUGS:
+;; [ ] if blank line with leading space, will parse error (do not know that command)
+
 (defun trim-string (string)
   "Remove white spaces in beginning and ending of STRING.
    White space here is any of: space, tab, emacs newline (line feed, ASCII 10)."
