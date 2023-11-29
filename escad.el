@@ -228,8 +228,7 @@
   ;; presently outputting to temprory buffer defined in (escad-current-buffer)
   (insert (concat string))
   (if newline
-      (insert "\n")
-    ))
+      (insert "\n")))
 
 (defun escad-process-file (lines)
   "input is lines of instruction file as list of strings"
@@ -265,5 +264,4 @@
   (let ((current-buffer-lines (read-lines-from-buffer)))
   (with-temp-buffer
     (escad-process-file current-buffer-lines)
-    (write-file "~/test.scad")
-    )))
+    (write-file "~/test.scad"))))
