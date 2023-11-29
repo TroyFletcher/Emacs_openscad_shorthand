@@ -98,20 +98,22 @@
 	 (car (read-from-string
 	       (concat
 		"("
-		(mapconcat
-		 'identity
-		 (split-string
-		  (mapconcat
-		   'identity
-		   (split-string
-		    (mapconcat
-		     'identity
-		     (split-string
-		      line ;; for line
-		      "\\.") "\\\.") ;; swap . with \.
-		    "\(") "\\\(") ;; swap ( with \(
-		  "\)") "\\\)") ;; swap ) with \)
-		")")))))
+		(if (string= (car (split-string line " ")) "p")
+		    ;; don't escape paraentheses
+		    (mapconcat 'identity (split-string
+			line ;; for line
+			"\\.") "\\\.") ;; swap . with \.
+		  ;; if it's NOT a polygon, escape the parentheses
+		  (mapconcat 'identity (split-string
+			(mapconcat 'identity (split-string
+				(mapconcat 'identity (split-string
+					line ;; for line
+				"\\.") "\\\.") ;; swap . with \.
+			"\(") "\\\(") ;; swap ( with \(
+		"\)") "\\\)") ;; swap ) with \)
+		)
+		")")))
+	 ))
     (cons
      (car cmd)
      (mapcar (lambda (x) (list 'quote x))
