@@ -1,6 +1,9 @@
 ;; Open an empty buffer, type openscad shorthand, and call (escad-current-buffer)
 ;; to write complete openscad syntax to ~/test.scad.
 ;; REQUIRES PACKAGE cl-lib !
+;; might need this for larger escad files: this is an UNexcessive limit (setq max-lisp-eval-depth 10000)
+;; may also need variable: (setq max-specpdl-size 18000)
+;; May need to rewrite this with a dolist or something later
 
 ;; Example:
 
