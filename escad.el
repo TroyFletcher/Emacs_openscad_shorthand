@@ -120,13 +120,10 @@
 
 (defun stringer (value)
   "return the appropraite stringifying function for the value"
-  (if (typep value 'symbol)
+  (if (symbolp value)
       'symbol-name
-    (if (typep value 'integer)
-	'number-to-string
-      )
-    )
-  )
+    (if (numberp value)
+	'number-to-string)))
 
 ;; Approved commands (letters) to process
 (setq allowed-commands '(s c u t r y n d i m h re x p))
@@ -178,7 +175,10 @@
 	    (concat
 	     "cylinder("
 	     "d=" (funcall (stringer d) d) ", "
-	     "h=" (funcall (stringer h) h) ");")))
+	     "h=" (funcall (stringer h) h)
+	     (if center
+		 ", center=true")
+	     ");")))
 	 ((symbol-function 'n)(lambda () "union() {"))
 	 ((symbol-function 'd)(lambda () "difference() {"))
 	 ((symbol-function 'i)(lambda () "intersection() {"))
